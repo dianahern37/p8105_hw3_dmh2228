@@ -49,6 +49,7 @@ instacart_df |>
 There are 134 aisles. The aisles that the most items are ordered from are: fresh vegetables, fresh fruits, and packaged vegetable fruits. 
 
 ```{r}
+instacart_plot = 
 instacart_df |>
   filter(n() >= 10000)
   ggplot(instacart_df, aes(x = aisle_id)) + 
@@ -57,6 +58,14 @@ instacart_df |>
     title = "Orders by aisle",
     x = "Aisles by ID",
     y = "Number of orders")
+```
+
+```{r}
+instacart_table =
+instacart_df |> 
+  filter(aisle == c("baking ingredients", "dog food care", "packaged vegetables fruits")) |>
+  group_by(product_name, aisle) |> 
+  summarize(count = n()) 
 ```
 
 # Problem 2: BRFSS
@@ -68,11 +77,18 @@ data("brfss_smart2010")
 # Data cleaning
 
 ```{r}
-brfss_smart2010_df =
+brfss_smart2010_df = 
   brfss_smart2010 |>
   janitor::clean_names() |>
-  filter(topic == "Overall Health") 
+  select(-location_id) |>
+  filter(topic == "Overall Health") |>
+  mutate(
+    response = factor(response, levels = c("Poor", "Fair", "Good", "Very Good", "Excellent"))
+  ) |>
+  arrange(response)
 ```
+
+There are a total of `r length(brfss_smart2010_df)` variables. There are `r nrow(brfss_smart2010_df)` rows and `r ncol(brfss_smart2010_df)` columns.
 
 
 
