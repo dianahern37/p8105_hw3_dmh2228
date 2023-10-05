@@ -12,6 +12,8 @@ library(tidyverse)
 
 library(p8105.datasets)
 
+library(patchwork)
+
 knitr::opts_chunk$set(
   fig.width = 6,
   fig.asp = .6,
@@ -110,3 +112,26 @@ labs(
 ```
 
 The average data value fluctuates by year for most states.
+
+```{r}
+ny2006_data =
+  brfss_smart2010_df |>
+  filter(locationabbr == "NY", year == "2006")
+
+ny2006_plot =
+ggplot(ny2006_data, aes(x = response, y = data_value, color = locationdesc)) +
+  geom_point()
+
+ny2010_data =
+  brfss_smart2010_df |>
+  filter(locationabbr == "NY", year == "2010")
+
+ny2010_plot =
+ggplot(ny2010_data, aes(x = response, y = data_value, color = locationdesc)) +
+  geom_point()
+
+ny2006_plot + ny2010_plot
+```
+
+2006 and 2010 have a similar distribution of `data_value` for responses (“Poor” to “Excellent”) among locations in NY State.
+
