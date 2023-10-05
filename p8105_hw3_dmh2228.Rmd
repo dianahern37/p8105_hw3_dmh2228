@@ -135,3 +135,27 @@ ny2006_plot + ny2010_plot
 
 2006 and 2010 have a similar distribution of `data_value` for responses (“Poor” to “Excellent”) among locations in NY State.
 
+# Problem 3: NHANES
+
+```{r}
+nhanes_accel_data = 
+  read_csv("./nhanes_data/nhanes_accel.csv") |>
+  janitor::clean_names() 
+```
+
+```{r}
+nhanes_covar_data = 
+  read_csv("./nhanes_data/nhanes_covar.csv", skip = 4) |>
+  janitor::clean_names() |>
+  mutate(
+    sex =
+      case_match(
+        sex,
+        1 ~ "Male",
+        2 ~ "Female"),
+    sex = as.factor(sex)
+  ) 
+```
+
+
+
