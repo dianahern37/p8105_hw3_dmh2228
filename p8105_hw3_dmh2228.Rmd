@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   out.width = "90%"
 )
 
-theme_set(theme_minimal() + theme(legend.position = "bottom"))
+theme_set(theme_minimal())
 
 options(
   ggplot2.continuous.colour = "viridis",
@@ -90,5 +90,23 @@ brfss_smart2010_df =
 
 There are a total of `r length(brfss_smart2010_df)` variables. There are `r nrow(brfss_smart2010_df)` rows and `r ncol(brfss_smart2010_df)` columns.
 
+```{r}
+excellent_data =
+  brfss_smart2010_df |>
+  filter(response == "Excellent") |>
+  select(year, locationabbr, data_value) |>
+  group_by(locationabbr, year) |>
+  mutate(
+    mean_data_value = mean(data_value, na.rm = TRUE)
+  ) 
 
+ggplot(excellent_data, aes(x = year, y = mean_data_value, group = locationabbr, color = locationabbr)) +
+geom_line() +
+labs(
+  title = "Average data value across locations in state",
+  x = "Year",
+  y = "Average data value",
+  color = "Location")
+```
 
+The average data value fluctuates by year for most states.
