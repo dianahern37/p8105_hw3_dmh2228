@@ -5,9 +5,49 @@ date: "2023-10-14"
 output: github_document
 ---
 
-# load tidyverse
+# load tidyverse and setting options
 
 ```{r}
 library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
+
+# Problem 1: Instacart
+
+```{r}
+library(p8105.datasets)
+data("instacart")
+```
+
+There are a total of `r length(instacart)` variables. There are `r nrow(instacart)` rows and `r ncol(instacart)` columns. Examples of key variables include order ID, product ID, user ID, product name, aisle ID, aisle number, etc. 
+
+```{r}
+instacart_df =
+  instacart |>
+  group_by(aisle) |>
+  summarize(n_obs = n())
+```
+
+There are 134 aisles. The aisles that the most items are ordered from are: fresh vegetables, fresh fruits, and packaged vegetable fruits. 
+
+
+
+
+
+
 
