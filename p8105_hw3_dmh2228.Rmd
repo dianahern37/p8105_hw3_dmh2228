@@ -5,10 +5,12 @@ date: "2023-10-14"
 output: github_document
 ---
 
-# load tidyverse and setting options
+# load tidyverse, setting options, and p8105.datasets
 
 ```{r}
 library(tidyverse)
+
+library(p8105.datasets)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -30,24 +32,47 @@ scale_fill_discrete = scale_fill_viridis_d
 # Problem 1: Instacart
 
 ```{r}
-library(p8105.datasets)
 data("instacart")
 ```
 
 There are a total of `r length(instacart)` variables. There are `r nrow(instacart)` rows and `r ncol(instacart)` columns. Examples of key variables include order ID, product ID, user ID, product name, aisle ID, aisle number, etc. 
 
 ```{r}
-instacart_df =
-  instacart |>
+instacart_df = 
+  instacart
+  
+instacart_df |>
   group_by(aisle) |>
   summarize(n_obs = n())
 ```
 
 There are 134 aisles. The aisles that the most items are ordered from are: fresh vegetables, fresh fruits, and packaged vegetable fruits. 
 
+```{r}
+instacart_df |>
+  filter(n() >= 10000)
+  ggplot(instacart_df, aes(x = aisle_id)) + 
+  geom_bar() +
+  labs(
+    title = "Orders by aisle",
+    x = "Aisles by ID",
+    y = "Number of orders")
+```
 
+# Problem 2: BRFSS
 
+```{r}
+data("brfss_smart2010")
+```
 
+# Data cleaning
+
+```{r}
+brfss_smart2010_df =
+  brfss_smart2010 |>
+  janitor::clean_names() |>
+  filter(topic == "Overall Health") 
+```
 
 
 
