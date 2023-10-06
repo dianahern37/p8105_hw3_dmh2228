@@ -5,7 +5,7 @@ date: "2023-10-14"
 output: github_document
 ---
 
-# load tidyverse, setting options, and p8105.datasets
+# Load libraries and settings
 
 ```{r}
 library(tidyverse)
@@ -76,7 +76,7 @@ instacart_df |>
 data("brfss_smart2010")
 ```
 
-# Data cleaning
+# Data wrangling of brfsss_smart2010
 
 ```{r}
 brfss_smart2010_df = 
@@ -91,6 +91,20 @@ brfss_smart2010_df =
 ```
 
 There are a total of `r length(brfss_smart2010_df)` variables. There are `r nrow(brfss_smart2010_df)` rows and `r ncol(brfss_smart2010_df)` columns.
+
+```{r}
+locations_2002 = 
+brfss_smart2010_df |>
+  select(year, locationabbr, locationdesc) |>
+  filter(year==2002) |>
+  group_by(locationabbr, locationdesc) 
+
+locations_2010 = 
+  brfss_smart2010_df |>
+  select(year, locationabbr, locationdesc) |>
+  filter(year==2010) |>
+  group_by(locationabbr, locationdesc) 
+```
 
 ```{r}
 excellent_data =
@@ -137,7 +151,7 @@ ny2006_plot + ny2010_plot
 
 # Problem 3: NHANES
 
-# Data cleaning of accelerometer data
+# Data wrangling of accelerometer data
 
 ```{r}
 nhanes_accel_data = 
@@ -151,7 +165,7 @@ nhanes_accel_data =
   )
 ```
 
-# Data cleaning of demographic data
+# Data wrangling of demographic data
 
 ```{r}
 nhanes_covar_data = 
