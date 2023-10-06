@@ -66,8 +66,8 @@ instacart_df |>
 instacart_table =
 instacart_df |> 
   filter(aisle == c("baking ingredients", "dog food care", "packaged vegetables fruits")) |>
-  group_by(product_name, aisle) |> 
-  summarize(count = n()) 
+  group_by(aisle, product_name) |> 
+  summarize(n_obs = n()) 
 ```
 
 # Problem 2: BRFSS
@@ -162,8 +162,17 @@ nhanes_covar_data =
       case_match(
         sex,
         1 ~ "Male",
-        2 ~ "Female"),
-    sex = as.factor(sex)
+        2 ~ "Female"
+        ),
+    sex = as.factor(sex),
+    education =
+      case_match(
+        education,
+        1 ~ "Level 1",
+        2 ~ "Level 2",
+        3 ~ "Level 3"
+      ),
+    education = as.factor(education)
   ) 
 ```
 
@@ -172,8 +181,34 @@ nhanes_covar_data =
 ```{r}
 final_nhanes_data =
   full_join(nhanes_covar_data, nhanes_accel_data) |>
-  filter(age > 20)
+  filter(age > 20) |>
+  drop_na(sex, age, bmi, education) |>
+  mutate(
+    sex = as.factor(sex),
+    education = as.factor(education)
+  )
 ```
 
+```{r}
+sex_education_table =
+  final_nhanes_data |>
+  select(sex, education) |>
+  group_by(sex, education) |>
+  summarize(count = n())
 
+sex_education_table
+
+sex_education_plot =
+  ggplot(final_nhanes_data, aes(x = education, fill = sex)) +     
+  geom_bar(position = position_dodge(), alpha = 0.75) +
+  labs(
+    title = "Education level by sex",
+    x = "Levels of education",
+    y = "Number of participants",
+  )
+
+sex_education_plot
+```
+
+More female participants are in the 3rd level of education compared to male participants. However, more female participans are in the 1st level of education compared to male participants as well. There are more male participants in the 2nd level of education compared to female participants.
 
