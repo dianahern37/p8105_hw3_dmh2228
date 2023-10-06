@@ -137,11 +137,21 @@ ny2006_plot + ny2010_plot
 
 # Problem 3: NHANES
 
+# Data cleaning of accelerometer data
+
 ```{r}
 nhanes_accel_data = 
   read_csv("./nhanes_data/nhanes_accel.csv") |>
-  janitor::clean_names() 
+  janitor::clean_names() |>
+  pivot_longer(
+    !seqn,
+    names_to = "minute",
+    names_prefix = "min",
+    values_to = "mims"
+  )
 ```
+
+# Data cleaning of demographic data
 
 ```{r}
 nhanes_covar_data = 
@@ -155,6 +165,14 @@ nhanes_covar_data =
         2 ~ "Female"),
     sex = as.factor(sex)
   ) 
+```
+
+# Data merging
+
+```{r}
+final_nhanes_data =
+  full_join(nhanes_covar_data, nhanes_accel_data) |>
+  filter(age > 20)
 ```
 
 
