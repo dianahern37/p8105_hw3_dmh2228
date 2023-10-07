@@ -240,7 +240,7 @@ nhanes_total_activity_plot =
   geom_smooth(se = FALSE) +
   facet_grid(. ~ education) +
   labs(
-     title = "Total activity by age and sex comparing education levels",
+    title = "Total activity by age and sex across education levels",
     x = "Age (in years)",
     y = "Total activity (in mims)"
   )
@@ -249,3 +249,31 @@ nhanes_total_activity_plot
 ```
 
 Younger female participants are more active across all levels of education. Older men are more active in the first level of education, but less active in both the second and third level of education. Older women with the highest education are most active among all those with the highest level of education. In general, activity does fluctuate by year. 
+
+```{r}
+nhanes_24_hour_data =
+  final_nhanes_data |>
+  group_by(seqn, minute, mims) |>
+  mutate(
+    minute = as.numeric(minute),
+    mims_by_hour = mims/60, 
+    hour = minute/60
+    )
+
+nhanes_24_hour_plot =
+  ggplot(nhanes_24_hour_data, aes(x = hour, y = mims_by_hour, color = sex)) +
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ education) +
+  labs(    
+    title = "24-hour activity by sex across education levels",
+    x = "Hours (in a day)",
+    y = "Activity (in mims)"
+    ) +
+  scale_x_continuous(
+    breaks = c(0, 4, 8, 12, 16, 20, 24)
+    )
+nhanes_24_hour_plot
+```
+
+Male and female participants across education levels and a 24-hour period have a similar pattern in activity throughout the day. However, in the highest level of education, there is a greater distribution of activity over the 24-hour period among both females and males.
