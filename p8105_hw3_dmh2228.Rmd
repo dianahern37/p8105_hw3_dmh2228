@@ -95,16 +95,25 @@ There are a total of `r length(brfss_smart2010_df)` variables. There are `r nrow
 ```{r}
 locations_2002 = 
 brfss_smart2010_df |>
-  select(year, locationabbr, locationdesc) |>
+  select(year, locationabbr) |>
   filter(year==2002) |>
-  group_by(locationabbr, locationdesc) 
+  count(locationabbr, year, name = "n_obs") |>
+  filter(n_obs >= 7) |>
+  select(locationabbr)
 
 locations_2010 = 
   brfss_smart2010_df |>
-  select(year, locationabbr, locationdesc) |>
+  select(year, locationabbr) |>
   filter(year==2010) |>
-  group_by(locationabbr, locationdesc) 
+  count(locationabbr, year, name = "n_obs") |>
+  filter(n_obs >= 7) |>
+  select(locationabbr)
+  
 ```
+
+In 2002, the states that were observed at 7 or more sites are `r list(locations_2002)`.
+
+In 2010, the states that were observed at 7 or more sites are  `r list(locations_2010)`.
 
 ```{r}
 excellent_data =
