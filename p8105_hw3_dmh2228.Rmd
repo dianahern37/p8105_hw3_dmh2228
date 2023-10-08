@@ -221,16 +221,20 @@ sex_education_table =
 
 sex_education_table
 
-sex_education_plot =
-  ggplot(final_nhanes_data, aes(x = education, fill = sex)) +     
-  geom_bar(position = position_dodge(), alpha = 0.75) +
+sex_education_age_plot =
+  ggplot(final_nhanes_data, aes(x = age, fill = sex)) +     
+  geom_density(alpha = .5, adjust = .5) +
   labs(
-    title = "Education level by sex",
-    x = "Levels of education",
-    y = "Number of participants"
+    title = "Age distribution by sex across education levels",
+    x = "Age (in years) of participants",
+      y = "Density of participants"
+  ) +
+  facet_grid(. ~ education) +
+  scale_x_continuous(
+    breaks = c(10, 20, 30, 40, 50, 60, 70, 80)
   )
 
-sex_education_plot
+sex_education_age_plot
 ```
 
 More female participants are in the 3rd level of education compared to male participants. However, more female participants are in the 1st level of education compared to male participants as well. There are more male participants in the 2nd level of education compared to female participants.
@@ -271,7 +275,7 @@ nhanes_24_hour_data =
 
 nhanes_24_hour_plot =
   ggplot(nhanes_24_hour_data, aes(x = hour, y = mims_by_hour, color = sex)) +
-  geom_point(alpha = .5) +
+  geom_point(alpha = .3) +
   geom_smooth(se = FALSE) +
   facet_grid(. ~ education) +
   labs(    
@@ -282,6 +286,7 @@ nhanes_24_hour_plot =
   scale_x_continuous(
     breaks = c(0, 4, 8, 12, 16, 20, 24)
     )
+
 nhanes_24_hour_plot
 ```
 
