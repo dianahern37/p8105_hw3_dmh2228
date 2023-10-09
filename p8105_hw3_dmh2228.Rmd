@@ -39,22 +39,22 @@ data("instacart")
 
 There are a total of `r length(instacart)` variables. There are `r nrow(instacart)` rows and `r ncol(instacart)` columns. Examples of key variables include order ID, product ID, user ID, product name, aisle ID, aisle number, etc. 
 
+# Number of aisles and most items ordered from aisles
+
 ```{r}
 instacart_df = 
-  instacart
-  
-instacart_df |>
-  group_by(aisle) |>
+  instacart |>
+  group_by(aisle_id, aisle) |>
   summarize(n_obs = n())
 ```
 
 There are 134 aisles. The aisles that the most items are ordered from are: fresh vegetables, fresh fruits, and packaged vegetable fruits. 
 
+# Number of items ordered in each aisle
+
 ```{r}
 instacart_plot = 
-instacart_df |>
-  filter(n() >= 10000)
-  ggplot(instacart_df, aes(x = aisle_id)) + 
+  ggplot(instacart, aes(x = aisle_id)) + 
   geom_bar() +
   labs(
     title = "Orders by aisle",
@@ -62,13 +62,31 @@ instacart_df |>
     y = "Number of orders")
 ```
 
+# Most popular items in “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
+
 ```{r}
 instacart_table =
-instacart_df |> 
+instacart |> 
   filter(aisle == c("baking ingredients", "dog food care", "packaged vegetables fruits")) |>
   group_by(aisle, product_name) |> 
   summarize(n_obs = n()) 
+
+instacart_table
 ```
+
+# Pink Lady Apples and Coffee Ice Cream
+
+```{r}
+apples_coffee_table =
+  instacart |> 
+  select(product_name, order_hour_of_day, order_dow) |> 
+  filter(product_name == c("Pink Lady Apples", "Coffee Ice Cream")) |> 
+  group_by(order_dow, order_hour_of_day) |>
+  summarize(
+    mean_order_hour_of_day = mean(order_hour_of_day, na.rm = TRUE)
+  ) 
+```
+
 
 # Problem 2: BRFSS
 
@@ -91,6 +109,8 @@ brfss_smart2010_df =
 ```
 
 There are a total of `r length(brfss_smart2010_df)` variables. There are `r nrow(brfss_smart2010_df)` rows and `r ncol(brfss_smart2010_df)` columns.
+
+# 7 or more locations in states in 2002 and 2010
 
 ```{r}
 locations_2002 = 
@@ -115,6 +135,8 @@ In 2002, the states that were observed at 7 or more sites are `r list(locations_
 
 In 2010, the states that were observed at 7 or more sites are  `r list(locations_2010)`.
 
+# Average data_value across locations within a state for 'Excellent' responses
+
 ```{r}
 excellent_data =
   brfss_smart2010_df |>
@@ -135,6 +157,8 @@ labs(
 ```
 
 The average data value fluctuates by year for most states.
+
+# Distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State for 2006 and 2010
 
 ```{r}
 ny2006_data =
@@ -212,12 +236,15 @@ final_nhanes_data =
   )
 ```
 
+# Men and women in each education category and their age distribution
+
 ```{r}
 sex_education_table =
   final_nhanes_data |>
   select(sex, education) |>
   group_by(sex, education) |>
-  summarize(count = n())
+  summarize(count = n()) |>
+  knitr::kable(digits = 1)
 
 sex_education_table
 
@@ -238,6 +265,8 @@ sex_education_age_plot
 ```
 
 More female participants are in the 3rd level of education compared to male participants. However, more female participants are in the 1st level of education compared to male participants as well. There are more male participants in the 2nd level of education compared to female participants.
+
+# Total activity by sex across education levels
 
 ```{r}
 nhanes_total_activity_data =
@@ -262,6 +291,8 @@ nhanes_total_activity_plot
 ```
 
 Younger female participants are more active across all levels of education. Older men are more active in the first level of education, but less active in both the second and third level of education. Older women with the highest education are most active among all those with the highest level of education. In general, activity does fluctuate by year. 
+
+# 24-hour activity time courses by sex over education levels
 
 ```{r}
 nhanes_24_hour_data =
