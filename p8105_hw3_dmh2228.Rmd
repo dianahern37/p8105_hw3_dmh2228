@@ -302,13 +302,14 @@ nhanes_total_activity_plot =
   labs(
     title = "Total activity by age and sex across education levels",
     x = "Age (in years)",
-    y = "Total activity (in mims)"
+    y = "Total activity (in mims)",
+    color = "Sex"
   )
 
 nhanes_total_activity_plot
 ```
 
-Younger female participants are more active across all levels of education. Older men are more active in the first level of education, but less active in both the second and third level of education. Older women with the highest education are most active among all those with the highest level of education. In general, activity does fluctuate by year. 
+Younger female participants are more active across all levels of education compared to younger male participants. Older men are more active in the first level of education, but less active in both the second and third level of education. Older women with the highest education are most active compared to younger women and men, in general.
 
 # 24-hour activity time courses by sex over education levels
 
