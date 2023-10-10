@@ -271,7 +271,8 @@ sex_education_age_plot =
   labs(
     title = "Age distribution by sex across education levels",
     x = "Age (in years) of participants",
-      y = "Density of participants"
+    y = "Density of participants",
+    fill = "Sex of participants"
   ) +
   facet_grid(. ~ education) +
   scale_x_continuous(
@@ -281,7 +282,7 @@ sex_education_age_plot =
 sex_education_age_plot
 ```
 
-More female participants are in the 3rd level of education compared to male participants. However, more female participants are in the 1st level of education compared to male participants as well. There are more male participants in the 2nd level of education compared to female participants.
+The highest density for both female and male participants within the third level of education is the younger age group ranging from 20 to 30 years old. The highest densities for female participants within the second level of education is in the older age group ranging from 60 to 80 years old. However, for the male participants within the second level of education, the highest density is among the younger population. Within the first level of education, the density increases with age for female participants. The highest density for male participants within the first level of education is in the middle-aged group ranging from 40 to 50 years old. 
 
 # Total activity by sex across education levels
 
