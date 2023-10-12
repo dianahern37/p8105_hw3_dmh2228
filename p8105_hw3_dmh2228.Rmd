@@ -78,7 +78,7 @@ aisle_plot
 ```{r}
 instacart_table =
 instacart |> 
-  filter(aisle == c("baking ingredients", "dog food care", "packaged vegetables fruits")) |>
+  filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) |>
   group_by(aisle) |> 
   count(product_name) |> 
   mutate(rank = min_rank(desc(n))) |> 
@@ -96,7 +96,7 @@ instacart_table
 apples_coffee_table =
   instacart |> 
   select(product_name, order_hour_of_day, order_dow) |> 
-  filter(product_name == c("Pink Lady Apples", "Coffee Ice Cream")) |> 
+  filter(product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) |> 
   group_by(product_name, order_dow) |>
   summarize(
     mean_hour_of_day = mean(order_hour_of_day, na.rm = TRUE)
@@ -343,7 +343,7 @@ Younger female participants are more active across all levels of education compa
 ```{r}
 nhanes_24_hour_data =
   final_nhanes_data |>
-  group_by(seqn, minute, mims) |>
+  group_by(seqn) |>
   mutate(
     minute = as.numeric(minute),
     mims_by_hour = mims/60, 
@@ -358,7 +358,8 @@ nhanes_24_hour_plot =
   labs(    
     title = "24-hour activity by sex across education levels",
     x = "Hours (in a day)",
-    y = "Activity (in mims)"
+    y = "Activity (in mims)",
+    color = "Sex"
     ) +
   scale_x_continuous(
     breaks = c(0, 4, 8, 12, 16, 20, 24)
