@@ -55,23 +55,26 @@ There are 134 aisles. The aisles that the most items are ordered from are: fresh
 ```{r}
 aisle_df = 
   instacart |>
-  count(aisle_id) |>
+  count(aisle) |>
   filter(n > 10000) |>
   mutate(
-    aisle_id = as.factor(aisle_id),
-    aisle_id = fct_reorder(aisle_id, n)
+    aisle_id = as.factor(aisle),
+    aisle_id = fct_reorder(aisle, n)
   )
 
 aisle_plot =
-  ggplot(aisle_df, aes(x = aisle_id, y = n)) + 
+  ggplot(aisle_df, aes(x = aisle, y = n)) + 
   geom_point() +
   labs(
     title = "Orders by aisle",
-    x = "Aisles by ID",
-    y = "Number of orders")
+    x = "Aisles",
+    y = "Number of orders") +
+  theme(axis.text.x = element_text(angle = 90))
 
 aisle_plot
 ```
+
+Aisles are arranged alphabetically and aisle names are vertical for readability. The plot shows that fresh fruit and fresh vegetables have the highest number of orders. 
 
 # Most popular items in “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
 
@@ -89,6 +92,8 @@ instacart |>
 
 instacart_table
 ```
+
+The three most ordered products within the packaged vegetables fruits aisle are organic baby spinach, organic raspberries, and organic blueberries. The three most ordered products within the baking ingredients aisle are light brown sugar, pure baking soda, and cane sugar. The three most ordered products within the dog food care aisle are snack sticks chicken & rice recipe dog treats, organix chicken & brown rice recipe, and small dog biscuits.
 
 # Pink Lady Apples and Coffee Ice Cream
 
@@ -109,6 +114,7 @@ apples_coffee_table =
 apples_coffee_table
 ```
 
+The mean hour of day ranges from 11am to 4pm for both coffee ice cream and pink lady apples by day of the week. For all but day 5, pink lady apples are ordered earlier than coffee ice cream.
 
 # Problem 2: BRFSS
 
@@ -368,4 +374,4 @@ nhanes_24_hour_plot =
 nhanes_24_hour_plot
 ```
 
-Male and female participants across education levels and a 24-hour period have a similar pattern in activity throughout the day. However, in the highest level of education, there is a greater distribution of activity over the 24-hour period among both females and males.
+Male and female participants across education levels and a 24-hour period have a similar pattern in activity throughout the day. However, in the highest level of education, there is a greater distribution of activity over the 24-hour period among both females and males. The x-axis shows hours in a day instead of minutes to make the graph more legible. 
